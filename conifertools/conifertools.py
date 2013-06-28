@@ -510,7 +510,10 @@ class ConiferPipeline:
         
         return c
     
-    def makeCalls(self, chromosomes=None, samples=None, verbose=False):
+    def makeCalls(self, chromosomes=None, samples=None, n_cpus=1, verbose=False, n_retry=0):
+      if n_cpus > 1:
+        return self.makeCallsMPI(chromosomes,samples,n_cpus,verbose,n_retry)
+      else:
         if chromosomes == None:
             chromosomes = self.contigs
         if not self.is_sequence(chromosomes):

@@ -9,7 +9,7 @@ if __name__ == "__main__":
     parser.add_argument("--outfile", "-o", action="store", required=True)
     parser.add_argument("--chr", "-c", action="store", nargs="+", required=False, default="All")
     parser.add_argument("--samples", "-s", action="store", nargs="+", required=False, default="All")
-    parser.add_argument("--ncpu", "--ncpus", action="store", type=int, required=False, default=10)
+    parser.add_argument("--ncpu", "--ncpus", action="store", type=int, required=False, default=1)
     parser.add_argument("--nretry", "--nretries", action="store", type=int, required=False, default=3)
     parser.add_argument("--verbose", "-v", action="store_true", required=False, default=False)
     args = parser.parse_args()
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         samples = args.samples
         print "Samples: ", ", ".join(samples)
 
-    calls = p.makeCallsMPI(chromosomes=chromosomes,
+    calls = p.makeCalls(chromosomes=chromosomes,
                            samples=samples,
                            n_cpus=args.ncpu,
                            n_retry=args.nretry,
