@@ -10,6 +10,7 @@ try:
 except:
     print "Import Error: Could not import rpy2 and/or CGHcall. Installed?"
 import sys
+import traceback
 import os
 import time
 import types
@@ -448,7 +449,7 @@ class ConiferPipeline:
                 print "%(sampleID)s: Failed to ExpandCGHcall() on chromosome %(chrom)d\n" % {"sampleID":sampleID,"chrom":data["CHROMOSOME"][0]}
                 raise
         except:
-            #print "[ERROR]: Failed on R code for sample %s" % sampleID
+            print "[ERROR] Failed on R code for sample %s" % sampleID
             raise
         
         out=np.vstack([np.array(cghbase.chromosomes(t6)),
@@ -472,8 +473,8 @@ class ConiferPipeline:
         try:
             out = self.runCGHCall(data, sample)
         except:
-            print "[ERROR] in runCGHCall() Method, %d, %s" % (len(data), sample)
-            pass
+            print "[ERROR] in runCGHCall() Method, %s" % (sample)
+            raise
         
         # post process 
         out["call"] = np.sign(out["call"])
@@ -538,6 +539,7 @@ class ConiferPipeline:
                 except:
                     #skip this chromosome
                     print "Failed on chromosome, ", chrom
+                    traceback.print_exc()
                     continue
                 sample_calls.appendCalls(chrom_calls)
             if len(sample_calls.calls) > 0:
